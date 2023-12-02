@@ -22,7 +22,7 @@ int main(void)
   long int docno, offset, doclen;
   char path[STRPATH];
   char word[WORDLEN];
-  char class[WORDLEN];
+  // char class[WORDLEN];
   TreeRoot bst;
   StopList stoplist[TOTLIST];
 
@@ -104,7 +104,7 @@ int main(void)
           }
 
           fprintf(fnme, "%ld\t%s\n", docno, ep->d_name);
-          fprintf(finf, "%ld\t %ld \t%ld\t %s\n", docno, doclen, offset, class); /* store docno, doclen & offset */
+          fprintf(finf, "%ld\t %ld \t%ld\n", docno, doclen, offset); /* store docno, doclen & offset */
         }
         docno++;
         fclose(fdat);
