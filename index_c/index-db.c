@@ -71,6 +71,7 @@ int main (void)
       {
 	path[0]='\0';
 	strcat(path,dirdata);
+	strcat(path,"/"); // 
 	strcat(path,ep->d_name);
         printf("path %s \n",path);	
 	if((fdat=fopen(path,"r"))==NULL)
