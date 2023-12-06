@@ -1,6 +1,6 @@
-#define BUFLEN      256
+#define BUFLEN      512
 #define WORDLEN     50
-#define STRPATH	    512
+#define STRPATH	  512
 #define TOTLIST     601     /* number of stopword in file stoplist */
 #define MAXQUERY    25
 /* used in classifier.c 
