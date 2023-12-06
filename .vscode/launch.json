@@ -5,7 +5,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/querydb",
-            "args": ["daging"],
+            "args": ["sekolah","20"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
