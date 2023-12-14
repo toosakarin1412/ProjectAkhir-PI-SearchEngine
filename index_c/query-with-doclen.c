@@ -162,7 +162,7 @@ void query(FILE *finv, FILE *fnme, Term * arrterm, char *query, int N, int HEAPS
           /* read inverted list for the term */
           fseek(finv,offset,0);
           ilbuf=(long int *) malloc(sizeof(long int)*(len));
-          fread(ilbuf,sizeof(int),len,finv);
+          fread(ilbuf,sizeof(long int),len,finv);
           fw = len/2;
           printf("#Word ['%s'], fw (num of doc containing the word) = %f\n",queryterm[i],fw);
 
