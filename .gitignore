@@ -1,6 +1,11 @@
 index_c/indexdb
 index_c/querydb
 index_c/data/*
+
 data/*
+
 solr/
+
+node_modules/
+__pycache__/
 .env
