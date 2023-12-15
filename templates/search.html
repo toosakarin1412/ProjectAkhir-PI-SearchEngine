@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet"
             href="{{url_for('static',filename='dist/css/output.css')}}">
-        <title>Flowbite Flask</title>
+        <title>Kocomoto</title>
     </head>
     <body>
         <div class="w-full">
@@ -165,9 +165,9 @@
                 </div>
 
                 <!-- Doc -->
-                <div>
+                <div class="pb-10">
                     {% if result["total"] == 0 %}
-                        <div>
+                        <div class="mb-10">
                             <p>Dokumen tidak ditemukan</p>
                         </div>
                     {% endif %}
@@ -175,7 +175,7 @@
                     <div class="flex flex-col gap-5">
                         {% for doc in result["docs"] %}
                         <div>
-                            <p>{{ doc["title"] }}</p>
+                            <a href="{{ url_for('openfile', file=doc['title']) }}" class="text-black hover:text-blue-600">{{ doc["title"] }}</a>
                             <p class="w-full h-12 text-xs text-gray-500 break-normal overflow-hidden">{{ doc["content"] }}</p>
                         </div>
                         {% endfor %}

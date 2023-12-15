@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request
-import search_engine
-import os
-import requests
-import json
+import search_engine.search_engine as se
+import urllib.parse
 
 app = Flask(__name__)
 
@@ -23,7 +21,8 @@ def search():
         engine = request.form["engine"]
 
         if engine == "index_c":
-            result = search_engine.search_c(query, int(k))
+            result = se.search_c(query, int(k))
+            pass
         elif engine == "nutch":
             result["docs"] = []
             result["total"] = len(result["docs"])
@@ -32,7 +31,17 @@ def search():
             result["docs"] = []
             result["total"] = len(result["docs"])
             result["time"] = 0.0001
-
-
-
     return render_template("search.html", query=query, k=k, engine=engine, result=result)
+
+@app.route("/open/<file>", methods = ["POST", "GET"])
+def openfile(file):
+    filename = urllib.parse.unquote(file).replace("\n", '')
+
+    with open(f"data/{filename}", "r") as f:
+        berita = f.read()
+    f.close()
+
+    return render_template("open.html", file=file, berita=berita)
+
+if __name__ == '__main__':
+    app.run(debug=True)
