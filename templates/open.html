@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Kocomoto</title>
+        <link rel="stylesheet"
+            href="{{url_for('static',filename='dist/css/output.css')}}">
+    </head>
+    <body>
+        <div class="pt-8 pb-4 px-10 border-b border-gray-400">
+            <div class="flex gap-5">
+                <a href="{{ url_for('index') }}" class="container w-36">
+                    <img class="p-2"
+                        src="{{url_for('static', filename='img/kocomoto.png')}}" />
+                </a>
+            </div>
+            <p class="px-3 font-semibold">{{ file }}</p>
+        </div>
+
+        <div class="px-10 py-5">
+            <p class="px-3 text-normal font-normal text-justify	">
+                {{ berita }}
+            </p>
+        </div>
+    </body>
+</html>

@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import search_engine.search_engine as se
+import urllib.parse
 
 app = Flask(__name__)
 
@@ -31,6 +32,17 @@ def search():
             result["total"] = len(result["docs"])
             result["time"] = 0.0001
     return render_template("search.html", query=query, k=k, engine=engine, result=result)
+
+@app.route("/open/<file>", methods = ["POST", "GET"])
+def openfile(file):
+    filename = urllib.parse.unquote(file).replace("\n", '')
+    print(filename)
+
+    with open(f"index_c/data/{filename}", "r") as f:
+        berita = f.read()
+    f.close()
+
+    return render_template("open.html", file=file, berita=berita)
 
 if __name__ == '__main__':
     app.run(debug=True)
