@@ -36,9 +36,8 @@ def search():
 @app.route("/open/<file>", methods = ["POST", "GET"])
 def openfile(file):
     filename = urllib.parse.unquote(file).replace("\n", '')
-    print(filename)
 
-    with open(f"index_c/data/{filename}", "r") as f:
+    with open(f"data/{filename}", "r") as f:
         berita = f.read()
     f.close()
 

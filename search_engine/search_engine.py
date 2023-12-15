@@ -21,7 +21,7 @@ def read_docname_c(docList):
 
         docname = listDocs[str(doc)].replace("\n", '')
 
-        with open(f"index_c/data/{docname}") as f:
+        with open(f"data/{docname}") as f:
             berita = f.read()
         f.close()
 
@@ -63,7 +63,8 @@ def search_c(query, k):
     docs = list()
     for doc in hasil[4+q:4+q+k]:
         no = int(float(re.findall("\d+",doc)[0]))
-        docs.append(no)
+        if(int(float(re.findall("\d+",doc)[1])) != 0 and int(float(re.findall("\d+",doc)[2])) != 0):
+            docs.append(no)
 
     result["docs"] = read_docname_c(docs)
 
