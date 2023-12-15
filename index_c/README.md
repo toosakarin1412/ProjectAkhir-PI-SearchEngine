@@ -45,3 +45,7 @@ Nilai Buffer dinaikkan menjadi 512bytes
 **Bytes yang dibaca pada ```data.inv``` tidak sesuai dengan ukuran variabel penampung ```ilbuf```** -> FIX at [COMMIT #44555e5](https://github.com/toosakarin1412/ProjectAkhir-PI-SearchEngine/commit/44555e549a250728723991d749e1d0290dc8a0e5)<br>
 Pada kode yang melakukan read pada file index ```fread(ilbuf,sizeof(int),len,finv);``` diubah menjadi ```fread(ilbuf,sizeof(long int),len,finv);```<br>
 Karena ukuran ```ilbuf``` adalah *```long int```*
+<br><br>
+**Kesalahan ketika melakukan normalisasi accumulator** -> FIX at [COMMIT #d9db858](https://github.com/toosakarin1412/ProjectAkhir-PI-SearchEngine/commit/d9db858ec75a21943a6aa45222e39c3c496c01a6)<br>
+Pada kode untuk melakukan normalisasi nilai accumulator, nilai accumulatoor akan dibagi dengan panjang dokumen. Namun pada kode index panjang dokumen salah dan bernilai statis tidak. Sehingga prehitungan normalisasi menjadi salah dan pada kasus tertentu menyebabkan *core dump error*.<br>
+Pada bagian ```accumulator[i] += accumulator[i] / fileinfo[docno].doclen;``` di ubah menjadi ```accumulator[i] += accumulator[i] / fileinfo[i].doclen;``` Karena docno bukanlah variabel yang relevan dengan panjang setiap dokumen.
