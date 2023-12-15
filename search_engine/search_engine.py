@@ -1,6 +1,4 @@
 import os
-import subprocess
-import requests
 import re
 
 os.chdir("index_c")
