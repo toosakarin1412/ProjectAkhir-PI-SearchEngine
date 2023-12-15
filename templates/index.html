@@ -12,7 +12,7 @@
         <div class="grid md:h-screen place-items-center">
             <div class="container flex flex-col gap-5 max-w-md">
                 <img src="{{url_for('static', filename='img/kocomoto.png')}}" />
-                <form action="/search" method="post">
+                <form action="{{ url_for('search') }}" method="post">
                     <div class="flex flex-col gap-2 font-medium text-gray-400">
                         <div class="flex flex-row p-2">
                             <ul class="flex">

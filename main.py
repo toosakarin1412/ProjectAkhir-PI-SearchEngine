@@ -9,9 +9,14 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@app.route("/search", methods = ['POST'])
+@app.route("/search", methods = ['POST', 'GET'])
 def search():
+    query = str()
+    k = int()
+    engine = str()
     if request.method == "POST":
-        return request.form
+        query = request.form["query"]
+        k = request.form["k"]
+        engine = request.form["engine"]
 
-    return "Hihi"
+    return render_template("search.html", query=query, k=k, engine=engine)
