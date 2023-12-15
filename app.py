@@ -31,3 +31,6 @@ def search():
             result["total"] = len(result["docs"])
             result["time"] = 0.0001
     return render_template("search.html", query=query, k=k, engine=engine, result=result)
+
+if __name__ == '__main__':
+    app.run(debug=True)
