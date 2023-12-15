@@ -181,7 +181,7 @@ void query(FILE *finv, FILE *fnme, Term *arrterm, char *query, int N, int HEAPSI
       /* Normalize accumulator by document length */
       for (i = 0; i < N; i++)
       {
-        accumulator[i] += accumulator[i] / fileinfo[docno].doclen; /*using L(D)*/
+        accumulator[i] += accumulator[i] / fileinfo[i].doclen; /*using L(D)*/
       }
 
       /* build heap of size HEAPSIZE */
