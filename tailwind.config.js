@@ -5,7 +5,14 @@ module.exports = {
       "./static/src/**/*.js"
     ],
     theme: {
-      extend: {},
+      extend: {
+        colors: {
+          googleBlue: '#4285F4',
+          googleRed: '#EA4335',
+          googleYellow: '#FBBC05',
+          googleGreen: '#34A853',
+        },
+      },
     },
     plugins: [],
   }

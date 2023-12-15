@@ -1,13 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flowbite Flask</title>
-    <link rel="stylesheet" href="{{url_for('static',filename='dist/css/output.css')}}">
-</head>
-<body>
-    <h1 class="text-blue-600">Hello, Flask!</h1>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Flowbite Flask</title>
+        <link rel="stylesheet"
+            href="{{url_for('static',filename='dist/css/output.css')}}">
+    </head>
+    <body>
+        <div class="grid md:h-screen place-items-center">
+            <div class="container flex flex-col gap-5 max-w-md">
+                <img src="{{url_for('static', filename='img/kocomoto.png')}}" />
+                <form action="/search" method="post">
+                    <div class="flex flex-col gap-2 font-medium text-gray-400">
+                        <div class="flex flex-row p-2">
+                            <ul class="flex">
+                                <li class="bg-white hover:bg-gray-100">
+                                    <input type="radio" name="engine"
+                                        id="engine_c" value="index_c"
+                                        class="hidden peer" checked="checked">
+                                    <label for="engine_c"
+                                        class="peer-checked:text-googleBlue">
+                                        <div
+                                            class="p-2 border-b border-gray-400 ">
+                                            <p>C Index</p>
+                                        </div>
+                                    </label>
+                                </li>
+                            </ul>
+
+                            <ul class="flex">
+                                <li class="bg-white hover:bg-gray-100">
+                                    <input type="radio" name="engine"
+                                        id="engine_swish" value="swish_e"
+                                        class="hidden peer">
+                                    <label for="engine_swish"
+                                        class="peer-checked:text-googleBlue">
+                                        <div
+                                            class="p-2 border-b border-gray-400 ">
+                                            <p>Swish-E</p>
+                                        </div>
+                                    </label>
+                                </li>
+                            </ul>
+
+                            <ul class="flex">
+                                <li class="bg-white hover:bg-gray-100">
+                                    <input type="radio" name="engine"
+                                        id="engine_nutch" value="nutch"
+                                        class="hidden peer">
+                                    <label for="engine_nutch"
+                                        class="peer-checked:text-googleBlue">
+                                        <div
+                                            class="p-2 border-b border-gray-400 ">
+                                            <p>Apache Nutch</p>
+                                        </div>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div
+                            class="flex gap-1 px-2 pr-2 border border-gray-400 shadow-lg rounded-full text-black">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="gray" class="p-2 w-10">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                            </svg>
+                            <input type="text" name="query"
+                                class="w-full p-2 text-gray font-medium focus:outline-none">
+                            <select name="k" id="k" class="p-2 px-4 bg-white hover:bg-gray-100 text-gray-600 focus:outline-none rounded-full">
+                                <option value="10" selected>10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="40">40</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-center">
+                                <button type="submit"
+                                    class="p-2 bg-gray-100 border border-white hover:border-gray-400 hover:shadow-lg text-gray-700 rounded-lg">
+                                    Search 👀
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
 </html>
