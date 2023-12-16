@@ -7,6 +7,7 @@ usage() {
     echo " -h, --help      Display this help message"
     echo " -i, --install   SERVICE Install service"
     echo " -s, --stop      SERVICE Stop running service"
+    echo " -in, --index    SERCIVE make index"
 }
 
 has_argument() {
@@ -27,7 +28,7 @@ compile_c(){
         exit 1
     else
         echo "=================================================="
-        echo "Compiled Index-C succeeded"
+        echo "Compiled Index-C Complete"
         echo "=================================================="
     fi
 }
@@ -38,7 +39,7 @@ index_c(){
     cd ..
     
     echo "=================================================="
-    echo "Index with Index-C succeeded"
+    echo "Index with Index-C Complete"
     echo "=================================================="
 }
 
@@ -50,7 +51,7 @@ run_solr(){
     bin/solr start
     cd ..
     echo "=================================================="
-    echo "Running Apache Nutch + Solr Succeeded"
+    echo "Running Apache Nutch + Solr Complete"
     echo "=================================================="
 }
 
@@ -62,7 +63,7 @@ stop_solr(){
     bin/solr stop
     cd ..
     echo "=================================================="
-    echo "Stopping Apache Nutch + Solr Succeeded"
+    echo "Stopping Apache Nutch + Solr Complete"
     echo "=================================================="
 }
 
@@ -75,7 +76,19 @@ index_solr(){
     echo "making new index..."
     python solr_input.py
     echo "=================================================="
-    echo "Apache Nutch + Solr Index Succeeded"
+    echo "Apache Nutch + Solr Index Complete"
+    echo "=================================================="
+}
+
+index_swish(){
+    echo "=================================================="
+    echo "Running Index Swish-E"
+    echo "=================================================="
+    cd swish-e
+    swish-e -c config.conf
+    cd ..
+    echo "=================================================="
+    echo "Swish-E Index Complete"
     echo "=================================================="
 }
 
@@ -85,6 +98,33 @@ handle_options() {
             -h | --help)
                 usage
                 exit 0
+            ;;
+            -in | --index)
+                if ! has_argument $@; then
+                    echo "Input not valid." >&2
+                    usage
+                    exit 1
+                fi
+                
+                arg=$(extract_argument $@)
+                
+                if [[ "$arg" == "C" ]];
+                then
+                    index_c;
+                elif [[ "$arg" == "nutch" ]];
+                then
+                    index_solr;
+                elif [[ "$arg" == "swish" ]];
+                then
+                    index_swish;
+                elif [[ "$arg" == "all" ]];
+                then
+                    index_c;
+                    index_solr;
+                    index_swish;
+                fi
+                
+                shift
             ;;
             -i | --install*)
                 if ! has_argument $@; then
@@ -121,6 +161,27 @@ handle_options() {
                 then
                     stop_solr;
                 fi
+                
+                shift
+            ;;
+            -sw | --stopword)
+                if ! has_argument $@; then
+                    echo "Input not valid." >&2
+                    usage
+                    exit 1
+                fi
+                
+                arg=$(extract_argument $@)
+                echo "=================================================="
+                echo "Copying Stopword"
+                echo "=================================================="
+                echo "Copying to Index-C"
+                cp $arg index_c/stoplist
+                echo "Copying to Swish-E"
+                cp $arg swish-e/stopwords.txt
+                echo "=================================================="
+                echo "Complete Copying Stopword"
+                echo "=================================================="
                 
                 shift
             ;;
