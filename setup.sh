@@ -5,10 +5,9 @@ usage() {
     echo "Usage: $0 [OPTIONS]"
     echo "Options:"
     echo " -h, --help      Display this help message"
-    echo " -i, --install   SERVICE Install service (ex. -i nutch)"
-    echo " -r, --restart   SERVICE restart service (ex. -r nutch)"
-    echo " -s, --stop      SERVICE Stop running service (ex. -s nutch)"
-    echo " -a, --all       Compile Index-C and Run Apache Nutch + Solr"
+    echo " -i, --install   SERVICE Install service"
+    echo " -s, --stop      SERVICE Stop running service"
+    echo " -in, --index    SERCIVE make index"
 }
 
 has_argument() {
@@ -23,14 +22,13 @@ compile_c(){
     echo "=================================================="
     echo "Making C Index..."
     echo "=================================================="
-    make index -C index_c
-    make query -C index_c
+    make -C index_c
     if [ $? -ne 0 ]; then
         echo "The command failed with exit status $?"
         exit 1
     else
         echo "=================================================="
-        echo "Compiled Index-C succeeded"
+        echo "Compiled Index-C Complete"
         echo "=================================================="
     fi
 }
@@ -41,7 +39,7 @@ index_c(){
     cd ..
     
     echo "=================================================="
-    echo "Index with Index-C succeeded"
+    echo "Index with Index-C Complete"
     echo "=================================================="
 }
 
@@ -50,10 +48,10 @@ run_solr(){
     echo "Running Apache Nutch + Solr"
     echo "=================================================="
     cd solr
-    bin/solr start -h '0.0.0.0' -force
+    bin/solr start
     cd ..
     echo "=================================================="
-    echo "Running Apache Nutch + Solr Succeeded"
+    echo "Running Apache Nutch + Solr Complete"
     echo "=================================================="
 }
 
@@ -65,7 +63,7 @@ stop_solr(){
     bin/solr stop
     cd ..
     echo "=================================================="
-    echo "Stopping Apache Nutch + Solr Succeeded"
+    echo "Stopping Apache Nutch + Solr Complete"
     echo "=================================================="
 }
 
@@ -76,9 +74,21 @@ index_solr(){
     echo "Clean index..."
     solr/bin/post -c indexing -type text/xml -out yes -d $'<delete><query>*:*</query></delete>'
     echo "making new index..."
-    python3 solr_input.py
+    python solr_input.py
     echo "=================================================="
-    echo "Apache Nutch + Solr Index Succeeded"
+    echo "Apache Nutch + Solr Index Complete"
+    echo "=================================================="
+}
+
+index_swish(){
+    echo "=================================================="
+    echo "Running Index Swish-E"
+    echo "=================================================="
+    cd swish-e
+    swish-e -c config.conf
+    cd ..
+    echo "=================================================="
+    echo "Swish-E Index Complete"
     echo "=================================================="
 }
 
@@ -89,12 +99,32 @@ handle_options() {
                 usage
                 exit 0
             ;;
-            -a | --all)
-                compile_c;
-                index_c;
-                run_solr;
-                sleep 2
-                index_solr;
+            -in | --index)
+                if ! has_argument $@; then
+                    echo "Input not valid." >&2
+                    usage
+                    exit 1
+                fi
+                
+                arg=$(extract_argument $@)
+                
+                if [[ "$arg" == "C" ]];
+                then
+                    index_c;
+                elif [[ "$arg" == "nutch" ]];
+                then
+                    index_solr;
+                elif [[ "$arg" == "swish" ]];
+                then
+                    index_swish;
+                elif [[ "$arg" == "all" ]];
+                then
+                    index_c;
+                    index_solr;
+                    index_swish;
+                fi
+                
+                shift
             ;;
             -i | --install*)
                 if ! has_argument $@; then
@@ -112,7 +142,7 @@ handle_options() {
                 elif [[ "$arg" == "nutch" ]];
                 then
                     run_solr;
-                    sleep 10
+                    sleep 2
                     index_solr;
                 fi
                 
@@ -134,7 +164,7 @@ handle_options() {
                 
                 shift
             ;;
-            -r | --restart)
+            -sw | --stopword)
                 if ! has_argument $@; then
                     echo "Input not valid." >&2
                     usage
@@ -142,13 +172,16 @@ handle_options() {
                 fi
                 
                 arg=$(extract_argument $@)
-                
-                if [[ "$arg" == "nutch" ]];
-                then
-                    stop_solr;
-                    run_solr;
-                    index_solr;
-                fi
+                echo "=================================================="
+                echo "Copying Stopword"
+                echo "=================================================="
+                echo "Copying to Index-C"
+                cp $arg index_c/stoplist
+                echo "Copying to Swish-E"
+                cp $arg swish-e/stopwords.txt
+                echo "=================================================="
+                echo "Complete Copying Stopword"
+                echo "=================================================="
                 
                 shift
             ;;

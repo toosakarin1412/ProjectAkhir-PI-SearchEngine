@@ -10,5 +10,7 @@ node_modules/
 __pycache__/
 .env
 
-log
 solr.tar.gz
+
+log
+

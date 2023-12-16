@@ -26,9 +26,7 @@ def search():
         elif engine == "nutch":
             result = se.search_nutch(query, int(k))
         elif engine == "swish_e":
-            result["docs"] = []
-            result["total"] = len(result["docs"])
-            result["time"] = 0.0001
+            result = se.search_swish_e(query, int(k))
     return render_template("search.html", query=query, k=k, engine=engine, result=result)
 
 @app.route("/open/<file>", methods = ["POST", "GET"])
