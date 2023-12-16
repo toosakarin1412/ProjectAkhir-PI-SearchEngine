@@ -1,4 +1,6 @@
 import subprocess
+import requests
+import json
 import os
 import re
 
@@ -43,8 +45,6 @@ def search_c(query, k):
 
     q = max(len(query.split()), len(query.split(",")))
 
-    print(hasil)
-
     try:
         total = 0
 
@@ -71,7 +71,25 @@ def search_c(query, k):
     return result
 
 def search_nutch(query, k):
-    pass
+    result = dict()
+
+    query = re.split(r'\W+', query)
+
+    url = f"http://127.0.0.1:8983/solr/indexing/select?indent=true&q.op=OR&rows={k}&q="
+
+    for index, value in enumerate(query):
+        if index == 0:
+            url += f"content%3A{value}"
+        else:
+            url += f"OR%20content%3A{value}"
+
+    hasil = json.loads(requests.get(url).text)
+
+    result["time"] = hasil["responseHeader"]["QTime"]
+    result["total"] = hasil["response"]["numFound"]
+    result["docs"] = hasil["response"]["docs"]
+
+    return result
 
 def search_swish_e(query, k):
     pass
