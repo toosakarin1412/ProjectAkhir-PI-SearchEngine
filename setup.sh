@@ -22,7 +22,8 @@ compile_c(){
     echo "=================================================="
     echo "Making C Index..."
     echo "=================================================="
-    make -C index_c
+    make index -C index_c
+    make query -C index_c
     if [ $? -ne 0 ]; then
         echo "The command failed with exit status $?"
         exit 1
@@ -126,7 +127,7 @@ handle_options() {
                 
                 shift
             ;;
-            -i | --install*)
+            -i | --install)
                 if ! has_argument $@; then
                     echo "Input not valid." >&2
                     usage
