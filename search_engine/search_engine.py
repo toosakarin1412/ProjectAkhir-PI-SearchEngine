@@ -91,5 +91,63 @@ def search_nutch(query, k):
 
     return result
 
+def read_doc_swish(filename):
+    content = str()
+
+    try:
+        with open(f"data/{filename}", "r") as f:
+            content = f.read()
+            f.close()
+    except:
+        content = ""
+
+    return content
+
 def search_swish_e(query, k):
-    pass
+    result = dict()
+
+    command = ["swish-e", "-f", "result.index", "-w"]
+    query = re.split(r'\W+', query)
+
+    for idx, value in enumerate(query):
+        if idx == 0:
+            command.append(str(value))
+        else:
+            command.append("OR")
+            command.append(str(query[idx]))
+
+    command.append("-m")
+    command.append(f"{k}")
+    command.append("-x")
+    command.append("<swishtitle>\n")
+
+    hasil, err = subprocess.Popen(command, cwd="swish-e", stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+    hasil = hasil.splitlines()
+
+    for i, value in enumerate(hasil):
+        hasil[i] = value.decode()
+
+    try:
+        result["total"] = int(float(re.findall("\d+",hasil[3])[0]))
+        result["time"] = int(float(re.findall("\d+\.\d+",hasil[4])[0]))
+
+        docs = list()
+        for doc in hasil[6:]:
+            if doc == ".":
+                continue
+            
+            obj = dict()
+
+
+            obj["title"] = doc
+            obj["content"] = read_doc_swish(doc)
+
+            docs.append(obj)
+
+        result["docs"] = docs
+    except:
+        result["time"] = 0
+        result["total"] = 0
+        result["docs"] = []
+
+    return result

@@ -179,13 +179,17 @@
                                     <a href="{{ url_for('openfile', file=doc['title'][0]) }}" class="text-black hover:text-blue-600">{{ doc["title"][0] }}</a>
                                     <p class="w-full h-12 text-xs text-gray-500 break-normal overflow-hidden">{{ doc["content"][0] }}</p>
                                 </div>
+                            {% elif engine == "swish_e" %}
+                                <div>
+                                    <a href="{{ url_for('openfile', file=doc['title']) }}" class="text-black hover:text-blue-600">{{ doc["title"] }}</a>
+                                    <p class="w-full h-12 text-xs text-gray-500 break-normal overflow-hidden">{{ doc["content"] }}</p>
+                                </div>
                             {% else %}
                                 <div>
                                     <a href="{{ url_for('openfile', file=doc['title']) }}" class="text-black hover:text-blue-600">{{ doc["title"] }}</a>
                                     <p class="w-full h-12 text-xs text-gray-500 break-normal overflow-hidden">{{ doc["content"] }}</p>
                                 </div>
                             {% endif %}
-
                         {% endfor %}
                     </div>
                 </div>
