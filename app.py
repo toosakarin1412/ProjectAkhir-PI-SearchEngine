@@ -24,9 +24,7 @@ def search():
             result = se.search_c(query, int(k))
             pass
         elif engine == "nutch":
-            result["docs"] = []
-            result["total"] = len(result["docs"])
-            result["time"] = 0.0001
+            result = se.search_nutch(query, int(k))
         elif engine == "swish_e":
             result["docs"] = []
             result["total"] = len(result["docs"])
