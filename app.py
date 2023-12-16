@@ -42,4 +42,4 @@ def openfile(file):
     return render_template("open.html", file=file, berita=berita)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
