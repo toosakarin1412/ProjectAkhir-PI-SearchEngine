@@ -31,6 +31,9 @@ RUN useradd -ms /bin/bash se
 USER se
 
 RUN bash setup.sh -i nutch
+RUN bash setup.sh -r nutch
+
+RUN bash setup.sh -in all
 
 USER root
 

@@ -49,7 +49,7 @@ run_solr(){
     echo "Running Apache Nutch + Solr"
     echo "=================================================="
     cd solr
-    bin/solr start
+    bin/solr start -force
     cd ..
     echo "=================================================="
     echo "Running Apache Nutch + Solr Complete"
@@ -75,7 +75,7 @@ index_solr(){
     echo "Clean index..."
     solr/bin/post -c indexing -type text/xml -out yes -d $'<delete><query>*:*</query></delete>'
     echo "making new index..."
-    python solr_input.py
+    python3 solr_input.py
     echo "=================================================="
     echo "Apache Nutch + Solr Index Complete"
     echo "=================================================="
@@ -183,6 +183,23 @@ handle_options() {
                 echo "=================================================="
                 echo "Complete Copying Stopword"
                 echo "=================================================="
+                
+                shift
+            ;;
+            -r | --restart)
+                if ! has_argument $@; then
+                    echo "Input not valid." >&2
+                    usage
+                    exit 1
+                fi
+                
+                arg=$(extract_argument $@)
+                
+                if [[ "$arg" == "nutch" ]];
+                then
+                    stop_solr;
+                    run_solr;
+                fi
                 
                 shift
             ;;

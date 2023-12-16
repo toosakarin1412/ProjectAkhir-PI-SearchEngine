@@ -63,10 +63,15 @@ docker build -t search-engine .
 ```
 Jalankan container dengan image yang telah dibuild
 ```bash
-docker run -p 5000:5000 -p 8983 --name search-engine search-engine
+docker run -p 5000:5000 -p 8983:8983 --name search-engine search-engine
 ``` 
-Restart service apache nutch
+Restart service apache nutch dan jalankan semua index
 ```bash
-docker exec search-engine bash setup.sh -r nutch
+# Masuk ke dalam container
+docker exec -it search-engine bash 
+
+# Pada bash container jalankan kedua perintah berikut
+$ bash setup.sh -r nutch
+$ bash setup.sh -in all
 ```
 Web dapat dilihat pada [http://localhost:5000](http://localhost:5000) atau [http://127.0.0.1:5000](http://127.0.0.1:5000)
