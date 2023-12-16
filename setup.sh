@@ -5,8 +5,10 @@ usage() {
     echo "Usage: $0 [OPTIONS]"
     echo "Options:"
     echo " -h, --help      Display this help message"
-    echo " -i, --install   SERVICE Install service"
-    echo " -s, --stop      SERVICE Stop running service"
+    echo " -i, --install   SERVICE Install service (ex. -i nutch)"
+    echo " -r, --restart   SERVICE restart service (ex. -r nutch)"
+    echo " -s, --stop      SERVICE Stop running service (ex. -s nutch)"
+    echo " -a, --all       Compile Index-C and Run Apache Nutch + Solr"
 }
 
 has_argument() {
@@ -21,7 +23,8 @@ compile_c(){
     echo "=================================================="
     echo "Making C Index..."
     echo "=================================================="
-    make -C index_c
+    make index -C index_c
+    make query -C index_c
     if [ $? -ne 0 ]; then
         echo "The command failed with exit status $?"
         exit 1
@@ -47,7 +50,7 @@ run_solr(){
     echo "Running Apache Nutch + Solr"
     echo "=================================================="
     cd solr
-    bin/solr start
+    bin/solr start -h '0.0.0.0' -force
     cd ..
     echo "=================================================="
     echo "Running Apache Nutch + Solr Succeeded"
@@ -73,7 +76,7 @@ index_solr(){
     echo "Clean index..."
     solr/bin/post -c indexing -type text/xml -out yes -d $'<delete><query>*:*</query></delete>'
     echo "making new index..."
-    python solr_input.py
+    python3 solr_input.py
     echo "=================================================="
     echo "Apache Nutch + Solr Index Succeeded"
     echo "=================================================="
@@ -85,6 +88,13 @@ handle_options() {
             -h | --help)
                 usage
                 exit 0
+            ;;
+            -a | --all)
+                compile_c;
+                index_c;
+                run_solr;
+                sleep 2
+                index_solr;
             ;;
             -i | --install*)
                 if ! has_argument $@; then
@@ -102,7 +112,7 @@ handle_options() {
                 elif [[ "$arg" == "nutch" ]];
                 then
                     run_solr;
-                    sleep 2
+                    sleep 10
                     index_solr;
                 fi
                 
@@ -120,6 +130,24 @@ handle_options() {
                 if [[ "$arg" == "nutch" ]];
                 then
                     stop_solr;
+                fi
+                
+                shift
+            ;;
+            -r | --restart)
+                if ! has_argument $@; then
+                    echo "Input not valid." >&2
+                    usage
+                    exit 1
+                fi
+                
+                arg=$(extract_argument $@)
+                
+                if [[ "$arg" == "nutch" ]];
+                then
+                    stop_solr;
+                    run_solr;
+                    index_solr;
                 fi
                 
                 shift
