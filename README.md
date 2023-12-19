@@ -57,6 +57,8 @@ python3 -m flask --app app runn
 Web dapat dilihat pada [http://localhost:5000](http://localhost:5000) atau [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
 ## Build dengan menggunakan Docker
+Sebelum melakukan build docker, silahkan download solr pada link berikut<br> [Apache Solr](https://drive.google.com/drive/folders/1I4ERFA4KMh_it3Sx789KyRddCQNhNL9x?usp=sharing)<br> kemudian letakkan pada folder root dan project ini.
+
 Build aplikasi menjadi docker images
 ```bash
 docker build -t search-engine .
